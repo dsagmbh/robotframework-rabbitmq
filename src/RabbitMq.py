@@ -23,13 +23,14 @@ RabbitMqMessage = Union[Tuple[Dict[str, Any], Dict[str, Any], str], Tuple[None, 
 
 class RequestConnection(object):
     """This class contains settings to connect to RabbitMQ via HTTP."""
-    def __init__(self, host: str, port: Union[int, str], username: str, password: str, timeout: int) -> None:
+    def __init__(self, host: str, port: Union[int, str], pathPrefix: str, username: str, password: str, timeout: int) -> None:
         """
         Initialization.
 
         *Args:*\n
         _host_ - server host name;\n
         _port_ - port number;\n
+        _pathPrefix_ - custom path-prefix for all HTTP requests;\n
         _username_ - user name;\n
         _password_ - user password;\n
         _timeout_ - connection timeout;\n
@@ -37,9 +38,12 @@ class RequestConnection(object):
         """
         self.host = host
         self.port = port
-        self.url = f'http://{host}:{port}/api'
         self.auth = (username, password)
         self.timeout = timeout
+        if pathPrefix:
+            self.url = f'http://{host}:{port}/{pathPrefix}/api'
+        else:
+            self.url = f'http://{host}:{port}/api'
 
     def close(self) -> None:
         """Close connection."""
@@ -208,7 +212,7 @@ class RabbitMq(object):
         self._channel = None
         return self._amqp_cache.register(self._amqp_connection, alias)
 
-    def _connect_to_http(self, host: str, port: Union[int, str], username: str, password: str, alias: str) -> int:
+    def _connect_to_http(self, host: str, port: Union[int, str], username: str, password: str, alias: str, pathPrefix: str) -> int:
         """ Connect to server via HTTP.
 
         *Args*:\n
@@ -217,6 +221,7 @@ class RabbitMq(object):
             _username_: user name.\n
             _password_: user password.\n
             _alias_: connection alias.\n
+            _pathPrefix_ - custom path-prefix for all HTTP requests;\n
 
         *Returns:*\n
             Server connection index.
@@ -225,17 +230,17 @@ class RabbitMq(object):
             BuiltIn().fail(msg="RabbitMq: port for connect is None")
         port = int(port)
         timeout = 15
-        parameters_for_connect = f"host={host}, port={port}, username={username}, timeout={timeout}, alias={alias}"
+        parameters_for_connect = f"host={host}, port={port}, pathPrefix={pathPrefix}, username={username}, timeout={timeout}, alias={alias}"
 
         logger.debug('Connecting using : {params}'.format(params=parameters_for_connect))
         try:
-            self._http_connection = RequestConnection(host, port, username, password, timeout)
+            self._http_connection = RequestConnection(host, port, pathPrefix, username, password, timeout)
         except (gaierror, error, IOError):
             BuiltIn().fail(msg=f"RabbitMq: Could not connect with following parameters: {parameters_for_connect}")
         return self._http_cache.register(self._http_connection, alias)
 
     def create_rabbitmq_connection(self, host: str, http_port: Union[int, str], amqp_port: Union[int, str],
-                                   username: str, password: str, alias: str, vhost: str) -> None:
+                                   username: str, password: str, alias: str, vhost: str, pathPrefix="") -> None:
         """
         Connect to RabbitMq server.
 
@@ -247,6 +252,7 @@ class RabbitMq(object):
         _password_ - user password;\n
         _alias_ - connection alias;\n
         _vhost_ - virtual host name;\n
+        _pathPrefix_ - custom path-prefix for all HTTP requests (OPTIONAL);\n
 
         *Returns:*\n
         Current connection index.
@@ -255,9 +261,12 @@ class RabbitMq(object):
         socket.error if connection cannot be created.
 
         *Example:*\n
-        | Create Rabbitmq Connection | my_host_name | 15672 | 5672 | guest | guest | alias=rmq | vhost=/ |
+        | Create Rabbitmq Connection | my_host_name | 15672 | 5672 | guest | guest | alias=rmq | vhost=/ |\n\n
+
+        *Example with Path-Prefix:*\n
+        | Create Rabbitmq Connection | my_host_name | 15672 | 5672 | guest | guest | alias=rmq | vhost=/ | pathPrefix="my-prefix" |
         """
-        self._connect_to_http(host=host, port=http_port, username=username, password=password, alias=alias + "_http")
+        self._connect_to_http(host=host, port=http_port, username=username, password=password, alias=alias + "_http", pathPrefix=pathPrefix)
         self._connect_to_amqp(host=host, port=amqp_port, username=username, password=password, alias=alias + "_amqp",
                               virtual_host=vhost)
 
@@ -623,7 +632,7 @@ class RabbitMq(object):
         _payload_ - payload message;\n
         _props_ - additional arguments in dictionary format;\n
          Includes such keys as:\n
-        - _content-type_ - message content type (shortstr);
+        - _content_type_ - message content type (shortstr);
         - _content_encoding_ - message encoding type (shortstr);
         - _headers_ - message headers table, a dictionary with keys of type string and values of types
          string | int | Decimal | datetime | dict values (table);
@@ -650,7 +659,7 @@ class RabbitMq(object):
         *Example:*\n
         | ${list_headers}= | Create List | head_value | 2 | ${TRUE} |
         | ${headers_dict}= | Create Dictionary | head1=val1 | head2=${list_headers} |
-        | ${prop_dict}= | Create Dictionary | application_headers=${headers_dict} | content-type=text/plain | priority=1 | expiration=1410966000 | message_id=101 | user_id=guest |
+        | ${prop_dict}= | Create Dictionary | application_headers=${headers_dict} | content_type=text/plain | priority=1 | expiration=1410966000 | message_id=101 | user_id=guest |
         | Publish Message | exchange_name=testExchange | routing_key=testQueue | payload=message body | props=${prop_dict} |
         """
         if props is not None:
