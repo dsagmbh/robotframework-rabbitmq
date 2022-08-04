@@ -20,7 +20,7 @@ Install the library from GitHub using pip:
 Documentation
 -------------
 
-See keyword documentation for RabbitMQ library on `GitHub`_.
+See keyword documentation for RabbitMQ library on this `QuickStart Guide`_.
 
 Example Code
 ------------
@@ -49,7 +49,7 @@ License
 Apache License 2.0
 
 .. _Robot Framework: http://www.robotframework.org
-.. _GitHub: https://rawgit.com/peterservice-rnd/robotframework-rabbitmq/master/docs/RabbitMq.html
+.. _QuickStart Guide: https://rawgit.com/peterservice-rnd/robotframework-rabbitmq/master/docs/RabbitMq.html
 
 .. |Build Status| image:: https://travis-ci.org/peterservice-rnd/robotframework-rabbitmq.svg?branch=master
    :target: https://travis-ci.org/peterservice-rnd/robotframework-rabbitmq
