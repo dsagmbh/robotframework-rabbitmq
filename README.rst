@@ -11,19 +11,19 @@ Short Description
 Installation
 ------------
 
-Install the library from PyPI using pip:
+Install the library from GitHub using pip:
 
 ::
 
-    pip install robotframework-rabbitmq
+    pip install "git+https://github.com/Quadrob/robotframework-rabbitmq.git"
 
 Documentation
 -------------
 
 See keyword documentation for RabbitMQ library on `GitHub`_.
 
-Example
--------
+Example Code
+------------
 
 .. code:: robotframework
 
@@ -31,12 +31,17 @@ Example
     Library    RabbitMq
     Library    Collections
 
+    Suite Setup         Create Rabbitmq Connection    my_host_name    15672    5773    guest    guest    alias=rmq    vhost=/    pathPrefix=my_prefix
+    Suite Teardown      Close All Rabbitmq Connections
+
     *** Test Cases ***
-    Simple Test
-        Create Rabbitmq Connection    my_host_name    15672    5672    guest    guest    alias=rmq
+    Check RabbitMQ Broker Connection is Active
+        ${live}=	Is Alive
+        Should Be True	${live}
+
+    Check RabbitMQ Broker Details Overview
         ${overview}=    Overview
         Log Dictionary    ${overview}
-        Close All Rabbitmq Connections
 
 License
 -------

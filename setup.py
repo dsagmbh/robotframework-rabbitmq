@@ -18,12 +18,12 @@ with open(path.join(here, 'requirements.txt')) as f:
 
 setup(
     name='robotframework-rabbitmq',
-    version='3.0.1',
-    description='A Robot Framework RabbitMq Library',
+    version='3.0.1', # Increase build version here 
+    description='A Robot Framework RabbitMq Library to test with reactive messaging.',
     long_description=long_description,
-    url='https://github.com/peterservice-rnd/robotframework-rabbitmq',
-    author='JSC PETER-SERVICE',
-    author_email='drse_aist_all@billing.ru',
+    url='https://github.com/Quadrob/robotframework-rabbitmq.git',
+    author='Robert Zeelie',
+    author_email='robertbots@gmail.com',
     license='Apache License 2.0',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
