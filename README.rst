@@ -15,7 +15,7 @@ Install the library from GitHub using pip:
 
 ::
 
-    pip install "git+https://github.com/Quadrob/robotframework-rabbitmq.git"
+    pip install "git+https://github.com/dsagmbh/robotframework-rabbitmq.git"
 
 Documentation
 -------------
