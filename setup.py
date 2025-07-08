@@ -17,13 +17,13 @@ with open(path.join(here, 'requirements.txt')) as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='robotframework-rabbitmq',
+    name='robotframework-rabbitmq-dsa',
     version='3.0.1', # Increase build version here 
     description='A Robot Framework RabbitMq Library to test with reactive messaging.',
     long_description=long_description,
-    url='https://github.com/Quadrob/robotframework-rabbitmq.git',
-    author='Robert Zeelie',
-    author_email='robertbots@gmail.com',
+    url='https://github.com/dsagmbh/robotframework-rabbitmq.git',
+    author= 'Devon Bowers',
+    author_email='Devon.Bowers@dsa.de',
     license='Apache License 2.0',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

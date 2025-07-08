@@ -43,6 +43,11 @@ Example Code
         ${overview}=    Overview
         Log Dictionary    ${overview}
 
+Acknowledgements
+------------
+
+This library is a fork of `robotframework-rabbitmq <https://github.com/Quadrob/robotframework-rabbitmq>`_ by Robert Zeelie, which itself is based on the original `robotframework-rabbitmq <https://github.com/peterservice-rnd/robotframework-rabbitmq>`_ by peterservice-rnd. Many thanks to the original authors for their foundational work.
+
 License
 -------
 

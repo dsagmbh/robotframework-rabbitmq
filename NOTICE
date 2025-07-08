@@ -1,0 +1,13 @@
+This project, robotframework-rabbitmq-dsa, is a derivative work.
+It is based on the robotframework-rabbitmq library.
+
+The original work is from peterservice-rnd:
+    Copyright 2018-2020 Peter-Service R&D
+    Licensed under the Apache License, Version 2.0.
+    Original repository: https://github.com/peterservice-rnd/robotframework-rabbitmq
+
+This fork also incorporates modifications from a subsequent fork by Robert Zeelie:
+    Copyright 2022 Robert Zeelie
+    Repository: https://github.com/Quadrob/robotframework-rabbitmq
+
+A copy of the Apache 2.0 License is included in the LICENSE file.
